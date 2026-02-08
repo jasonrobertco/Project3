@@ -76,7 +76,70 @@ bool isCorrectlyFormed(string tariffData)
 int summarizeData(string tariffData, double& meanPercentage, int& numUp, int& numDown)
 {
 	// TODO: Correctly implement this function!!
+    //validate stirng first
+
+    //if stirng not valid return 1
+    if (!isCorrectlyFormed(tariffData)){
 	return 1;
+    }
+    int i = 0; //index
+    int size = tariffData.size(); //length of string
+    string c = ""; //declare string for country check
+    int len = 4; //assume default length for country + number + expectation
+
+    int pct = 0; // percent
+    int total = 0;
+    int count = 0;
+
+    int up = 0;
+    int down = 0;
+    while (i < size)
+    {
+        len = 4; //reset length assume deafult 4
+        //need to format tariff percentages as a number -> int
+        pct = tariffData[i + 2] - '0'; //0-9 are consecutive in ascii
+
+        //same check as before for edge cases
+        if (i + 3 < size && isdigit(tariffData[i + 3]))
+        {
+            //move decimal place over 1
+            pct = pct * 10 + (tariffData[i + 3] - '0');
+            len = 5; //increase length
+        }
+
+        //expectation letter indexed based on length
+        char expect = tariffData[i + len - 1];
+
+        //edge case error 2
+        if ((pct == 99 && (expect == 'H' || expect == 'h')) || (pct == 0  && (expect == 'L' || expect == 'l')))
+        {
+            return 2;
+        }
+        //for mean canculation at end
+        total += pct;
+        count++;
+        //onyl need to check the high case
+        if (expect == 'H' || expect == 'h')
+            up++;
+        else
+            down++;
+        //increment to next phrase
+        i += len;
+    }
+
+    //pas by reference -> & in header
+    if (count == 0){
+        meanPercentage = 0;
+    } else {
+        //need to convert this into a double
+        meanPercentage = static_cast<double>(total)/count;
+    }
+
+    //pass by refernce up and down
+    numUp = up;
+    numDown = down;
+    //return default
+    return 0;
 }
 
 bool isNear(double a, double b)
