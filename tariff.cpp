@@ -5,7 +5,72 @@ using namespace std;
 bool isCorrectlyFormed(string tariffData)
 {
 	// TODO: Correctly implement this function!!
-	return false;
+	//return false;
+    //empty string is valid
+
+    /*return true if
+    string 0+ country records
+        2 letters
+            valid uppercase
+            not NZ
+        1 or 2 digits
+        one expectation letter
+    */
+    //empty case
+    if(tariffData == ""){
+            return true;
+    }
+    int i = 0; //indes
+    int size = tariffData.size(); //length of string
+    string c = ""; //declare string for country check
+    int len = 4; //assume default length for country + number + expectation
+
+    //check for length of the phrase so we can short circuit if necessary
+    if(size < 4){
+        return false;
+    }
+    //iterate through whole phrase
+    while(i < size){
+        //check the first 2 elements of our new phrase if they are letters
+        if (!isalpha(tariffData[i]) || !isalpha(tariffData[i+1])){
+            return false;
+        }
+
+        //checking if these are valid per reqs aka not equal to NZ
+        c = "";
+        c += toupper(tariffData[i]);
+        c += toupper(tariffData[i]);
+        
+        //checking for NZ edgecase and if the next is a number
+        if(c == "NZ" || !isValidUppercaseCountryCode(c) || !isdigit(tariffData[i+2])){
+            return false;
+        }
+        //we assume 1 digit as the normal case
+        //edge case
+        //check for 2nd digit
+        if (i + 3 < size && isdigit(tariffData[i+3])){
+            //check if we have expection after
+            if(i + 4 >= size){
+                return false;
+            }
+            //set len to 2 for 2 chars
+            len = 5;
+        }
+
+        // expectation
+
+        //use last character in the phrase 
+            //len changes above based on number
+        char expect = tariffData[i + len - 1];
+        //if its not a valid char return false
+        if (expect != 'H' && expect != 'h' && expect != 'L' && expect != 'l'){
+            return false;
+        }
+        //move to next word to parse move i by length
+        i += len;
+    }
+    //passes cases
+    return true;
 }
 
 int summarizeData(string tariffData, double& meanPercentage, int& numUp, int& numDown)
