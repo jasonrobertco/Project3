@@ -1,3 +1,28 @@
+/*
+405941013 Jason Co
+
+The main challenges that I faced for these functions were debugging
+and determining the best way too go about checking/implementing certain functionaltiy
+
+
+For the first 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+*/
+
+
 #include <string>
 #include "tariff.h"
 using namespace std;
