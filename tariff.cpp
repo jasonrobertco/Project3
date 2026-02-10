@@ -150,7 +150,12 @@ bool isCorrectlyFormed(string tariffData)
         return false;
     }
     //iterate through whole phrase
-    while(i < size){
+    while(i < size)
+        len = 4; //default
+        if (i + 3 >= size){ //size
+            return false;
+        }
+
         //check the first 2 elements of our new phrase if they are letters
         if (!isalpha(tariffData[i]) || !isalpha(tariffData[i+1])){
             return false;
@@ -159,7 +164,7 @@ bool isCorrectlyFormed(string tariffData)
         //checking if these are valid per reqs aka not equal to NZ
         c = "";
         c += toupper(tariffData[i]);
-        c += toupper(tariffData[i]);
+        c += toupper(tariffData[i+1]);
         
         //checking for NZ edgecase and if the next is a number
         if(c == "NZ" || !isValidUppercaseCountryCode(c) || !isdigit(tariffData[i+2])){
